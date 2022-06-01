@@ -29,6 +29,24 @@ public class GerenciadorDatabase {
     }
 
     public void adicionarAoBanco(Produto produto) {
+
+        String categoria = produto.getCategoria();
+
+        this.adicionarProduto(produto); 
+
+            if (categoria.equals("Monitor")) {
+                this.adicionarMonitor((Monitor) produto);
+
+            } else if (categoria.equals("Computador")) {
+                this.adicionarComputador((Computador) produto);
+
+            } else if (categoria.equals("Auricular")) {
+                this.adicionarAuricular((Auricular) produto);
+
+            }
+    }
+
+    public void adicionarProduto(Produto produto) {
         String id = produto.getId();
         String modelo = produto.getModelo();
         String marca = produto.getMarca();
@@ -48,63 +66,82 @@ public class GerenciadorDatabase {
             statement.setDouble(5, preco);
             statement.setString(6, categoria);
             statement.executeUpdate();
-            if (categoria.equals("Monitor")) {
-                Monitor monitor = (Monitor) produto;
 
-                int tamanho = monitor.getTamanho();
-                int taxaDeAtualizacao = monitor.getTaxaDeAtualizacao();
-                String resolucao = monitor.getResolucao();
-                String tipoDeTela = monitor.getTipoDeTela();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
-                comando = "INSERT INTO monitor VALUES (?, ?, ?, ?, ?)";
+    public void adicionarMonitor(Monitor monitor) {
 
-                PreparedStatement monitorStatement = connection.prepareStatement(comando);
+        String id = monitor.getId();
+        int tamanho = monitor.getTamanho();
+        int taxaDeAtualizacao = monitor.getTaxaDeAtualizacao();
+        String resolucao = monitor.getResolucao();
+        String tipoDeTela = monitor.getTipoDeTela();
 
-                monitorStatement.setString(1, id);
-                monitorStatement.setInt(2, tamanho);
-                monitorStatement.setInt(3, taxaDeAtualizacao);
-                monitorStatement.setString(4, resolucao);
-                monitorStatement.setString(5, tipoDeTela);
-                monitorStatement.executeUpdate();
-            } else if (categoria.equals("Computador")) {
-                Computador computador = (Computador) produto;
+        String comando = "INSERT INTO monitor VALUES (?, ?, ?, ?, ?)";
 
-                int memoriaRam = computador.getMemoriaRam();
-                int armazenamento = computador.getArmazenamento();
-                String sistemaOperacional = computador.getSistemaOperacional();
+        try {
 
-                comando = "INSERT INTO computador VALUES (?, ?, ?, ?)";
+            PreparedStatement monitorStatement = connection.prepareStatement(comando);
 
-                PreparedStatement computadorStatement = connection.prepareStatement(comando);
-                computadorStatement.setString(1, id);
-                computadorStatement.setInt(2, memoriaRam);
-                computadorStatement.setInt(3, armazenamento);
-                computadorStatement.setString(4, sistemaOperacional);
-                computadorStatement.executeUpdate();
-
-            } else if (categoria.equals("Auricular")) {
-                Auricular auricular = (Auricular) produto;
-
-                int impedancia = auricular.getImpedancia();
-                int sensibilidade = auricular.getSensibilidade();
-                String conexao = auricular.getConexao();
-
-                comando = "INSERT INTO auricular VALUES (?, ?, ?, ?)";
-
-                PreparedStatement auricularStatement = connection.prepareStatement(comando);
-                auricularStatement.setString(1, id);
-                auricularStatement.setInt(2, impedancia);
-                auricularStatement.setInt(3, sensibilidade);
-                auricularStatement.setString(4, conexao);
-                auricularStatement.executeUpdate();
-
-            }
+            monitorStatement.setString(1, id);
+            monitorStatement.setInt(2, tamanho);
+            monitorStatement.setInt(3, taxaDeAtualizacao);
+            monitorStatement.setString(4, resolucao);
+            monitorStatement.setString(5, tipoDeTela);
+            monitorStatement.executeUpdate();
 
         } catch (SQLException e) {
-
             System.out.println(e.getMessage());
-
         }
+    }
+
+    public void adicionarComputador(Computador computador) {
+
+        String id = computador.getId();
+        int memoriaRam = computador.getMemoriaRam();
+        int armazenamento = computador.getArmazenamento();
+        String sistemaOperacional = computador.getSistemaOperacional();
+
+        String comando = "INSERT INTO computador VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement computadorStatement = connection.prepareStatement(comando);
+            computadorStatement.setString(1, id);
+            computadorStatement.setInt(2, memoriaRam);
+            computadorStatement.setInt(3, armazenamento);
+            computadorStatement.setString(4, sistemaOperacional);
+            computadorStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void adicionarAuricular(Auricular auricular) {
+
+        String id = auricular.getId();
+        int impedancia = auricular.getImpedancia();
+        int sensibilidade = auricular.getSensibilidade();
+        String conexao = auricular.getConexao();
+
+        String comando = "INSERT INTO auricular VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement auricularStatement = connection.prepareStatement(comando);
+            auricularStatement.setString(1, id);
+            auricularStatement.setInt(2, impedancia);
+            auricularStatement.setInt(3, sensibilidade);
+            auricularStatement.setString(4, conexao);
+            auricularStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public ArrayList<Produto> carregarProdutos() {
@@ -174,7 +211,7 @@ public class GerenciadorDatabase {
         }
         return produtosDoBancoDeDados;
     }
-    
+
     public void apagarDoBanco(Produto produto) {
         String comando = String.format("DELETE FROM produto WHERE (id='%s')", produto.getId());
         try {
@@ -195,6 +232,5 @@ public class GerenciadorDatabase {
             System.out.println(e.getMessage());
         }
     }
-
 
 }
