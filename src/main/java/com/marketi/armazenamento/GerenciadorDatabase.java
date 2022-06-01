@@ -1,0 +1,200 @@
+package com.marketi.armazenamento;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import com.marketi.entidades.Auricular;
+import com.marketi.entidades.Computador;
+import com.marketi.entidades.Monitor;
+import com.marketi.entidades.Produto;
+
+public class GerenciadorDatabase {
+    Connection connection;
+
+    GerenciadorDatabase() {
+        try {
+            System.out.println("Conectando ao banco de dados");
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/marketi",
+                    "admin",
+                    "");
+            System.out.println("Banco de dados conectado.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void adicionarAoBanco(Produto produto) {
+        String id = produto.getId();
+        String modelo = produto.getModelo();
+        String marca = produto.getMarca();
+        String lote = produto.getMarca();
+        double preco = produto.getPreco();
+        String categoria = produto.getCategoria();
+
+        String comando = "INSERT INTO produto VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement(comando);
+            statement.setString(1, id);
+            statement.setString(2, modelo);
+            statement.setString(3, marca);
+            statement.setString(4, lote);
+            statement.setDouble(5, preco);
+            statement.setString(6, categoria);
+            statement.execute();
+            if (categoria.equals("Monitor")) {
+                Monitor monitor = (Monitor) produto;
+
+                int tamanho = monitor.getTamanho();
+                int taxaDeAtualizacao = monitor.getTaxaDeAtualizacao();
+                String resolucao = monitor.getResolucao();
+                String tipoDeTela = monitor.getTipoDeTela();
+
+                comando = "INSERT INTO monitor VALUES (?, ?, ?, ?, ?)";
+
+                PreparedStatement monitorStatement = connection.prepareStatement(comando);
+
+                monitorStatement.setString(1, id);
+                monitorStatement.setInt(2, tamanho);
+                monitorStatement.setInt(3, taxaDeAtualizacao);
+                monitorStatement.setString(4, resolucao);
+                monitorStatement.setString(5, tipoDeTela);
+                monitorStatement.execute();
+            } else if (categoria.equals("Computador")) {
+                Computador computador = (Computador) produto;
+
+                int memoriaRam = computador.getMemoriaRam();
+                int armazenamento = computador.getArmazenamento();
+                String sistemaOperacional = computador.getSistemaOperacional();
+
+                comando = "INSERT INTO computador VALUES (?, ?, ?, ?)";
+
+                PreparedStatement computadorStatement = connection.prepareStatement(comando);
+                computadorStatement.setString(1, id);
+                computadorStatement.setInt(2, memoriaRam);
+                computadorStatement.setInt(3, armazenamento);
+                computadorStatement.setString(4, sistemaOperacional);
+                computadorStatement.execute();
+
+            } else if (categoria.equals("Auricular")) {
+                Auricular auricular = (Auricular) produto;
+
+                int impedancia = auricular.getImpedancia();
+                int sensibilidade = auricular.getSensibilidade();
+                String conexao = auricular.getConexao();
+
+                comando = "INSERT INTO auricular VALUES (?, ?, ?, ?)";
+
+                PreparedStatement auricularStatement = connection.prepareStatement(comando);
+                auricularStatement.setString(1, id);
+                auricularStatement.setInt(2, impedancia);
+                auricularStatement.setInt(3, sensibilidade);
+                auricularStatement.setString(4, conexao);
+                auricularStatement.execute();
+
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        }
+    }
+
+    public ArrayList<Produto> carregarProdutos() {
+        ArrayList<Produto> produtosDoBancoDeDados = new ArrayList<>();
+        String comando = "SELECT * FROM produto";
+        try {
+            PreparedStatement statement = connection.prepareStatement(comando);
+            ResultSet resultado = statement.executeQuery(comando);
+
+            while (resultado.next()) {
+                String id = resultado.getString("id");
+                String modelo = resultado.getString("modelo");
+                String marca = resultado.getString("marca");
+                String lote = resultado.getString("lote");
+                double preco = resultado.getDouble("preco");
+                String categoria = resultado.getString("categoria");
+                if (categoria.equals("Diverso")) {
+
+                    produtosDoBancoDeDados.add(new Produto(id, marca, modelo, lote, preco));
+
+                } else if (categoria.equals("Monitor")) {
+
+                    comando = String.format("SELECT * FROM monitor WHERE id='%s'", id);
+                    PreparedStatement monitorStatement = connection.prepareStatement(comando);
+                    ResultSet resultadoMonitor = monitorStatement.executeQuery(comando);
+                    if (resultadoMonitor.next()) {
+                        int tamanho = resultadoMonitor.getInt("tamanho");
+                        int taxaDeAtualizacao = resultadoMonitor.getInt("taxadeatualizacao");
+                        String resolucao = resultadoMonitor.getString("resolucao");
+                        String tipoDeTela = resultadoMonitor.getString("tipodetela");
+                        produtosDoBancoDeDados
+                                .add(new Monitor(id, marca, modelo, lote, preco, tamanho, taxaDeAtualizacao,
+                                        resolucao, tipoDeTela));
+                    }
+
+                } else if (categoria.equals("Computador")) {
+
+                    comando = String.format("SELECT * FROM computador WHERE id='%s'", id);
+                    PreparedStatement computadorStatement = connection.prepareStatement(comando);
+                    ResultSet resultadoComputador = computadorStatement.executeQuery(comando);
+                    if (resultadoComputador.next()) {
+                        int memoriaRam = resultadoComputador.getInt("memoriaram");
+                        int armazenamento = resultadoComputador.getInt("armazenamento");
+                        String sistemaOperacional = resultadoComputador.getString("sistemaoperacional");
+                        produtosDoBancoDeDados
+                                .add(new Computador(id, marca, modelo, lote, preco, memoriaRam, armazenamento,
+                                        sistemaOperacional));
+                    }
+
+                } else if (categoria.equals("Auricular")) {
+
+                    comando = String.format("SELECT * FROM auricular WHERE id='%s'", id);
+                    PreparedStatement auricularStatement = connection.prepareStatement(comando);
+                    ResultSet resultadoAuricular = auricularStatement.executeQuery(comando);
+                    if (resultadoAuricular.next()) {
+                        int impedancia = resultadoAuricular.getInt("impedancia");
+                        int sensibilidade = resultadoAuricular.getInt("sensibilidade");
+                        String conexao = resultadoAuricular.getString("conexao");
+                        produtosDoBancoDeDados
+                                .add(new Auricular(id, marca, modelo, lote, preco, impedancia, sensibilidade, conexao));
+                    }
+
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return produtosDoBancoDeDados;
+    }
+    
+    public void apagarDoBanco(Produto produto) {
+        String comando = String.format("DELETE FROM produto WHERE (id='%s')", produto.getId());
+        try {
+            connection.prepareStatement(comando).executeUpdate();
+        } catch (SQLException e) {
+            e.getMessage();
+        }
+    }
+
+    public void atualizarPrecoNoBanco(Produto produto, double novoPreco) {
+        String comando = "UPDATE produto SET preco=? WHERE (id=?)";
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(comando);
+            updateStatement.setDouble(1, novoPreco);
+            updateStatement.setString(2, produto.getId());
+            updateStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+}
