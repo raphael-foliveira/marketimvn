@@ -29,35 +29,57 @@ public class GerenciadorDatabase {
     }
 
     public void adicionarAoBanco(Produto produto) {
-        String id = produto.getId();
-        String modelo = produto.getModelo();
-        String marca = produto.getMarca();
-        String lote = produto.getMarca();
-        double preco = produto.getPreco();
+
         String categoria = produto.getCategoria();
 
-        String comando = "INSERT INTO produto VALUES (?, ?, ?, ?, ?, ?)";
+        this.adicionarProduto(produto);
 
-        try {
+        if (categoria.equals("Monitor")) {
+            this.adicionarMonitor((Monitor) produto);
+        } else if (categoria.equals("Computador")) {            
+            this.adicionarComputador((Computador) produto);
+        } else if (categoria.equals("Auricular")) {
+            this.adicionarAuricular((Auricular) produto);
+        }
+    }
 
-            PreparedStatement statement = connection.prepareStatement(comando);
-            statement.setString(1, id);
-            statement.setString(2, modelo);
-            statement.setString(3, marca);
-            statement.setString(4, lote);
-            statement.setDouble(5, preco);
-            statement.setString(6, categoria);
-            statement.executeUpdate();
-            if (categoria.equals("Monitor")) {
-                Monitor monitor = (Monitor) produto;
+        public void adicionarProduto(Produto produto) {
+            
+            String id = produto.getId();
+            String modelo = produto.getModelo();
+            String marca = produto.getMarca();
+            String lote = produto.getMarca();
+            double preco = produto.getPreco();
+            String categoria = produto.getCategoria();
 
-                int tamanho = monitor.getTamanho();
-                int taxaDeAtualizacao = monitor.getTaxaDeAtualizacao();
-                String resolucao = monitor.getResolucao();
-                String tipoDeTela = monitor.getTipoDeTela();
+            String comando = "INSERT INTO produto VALUES (?, ?, ?, ?, ?, ?)";
 
-                comando = "INSERT INTO monitor VALUES (?, ?, ?, ?, ?)";
+            try {
 
+                PreparedStatement statement = connection.prepareStatement(comando);
+                statement.setString(1, id);
+                statement.setString(2, modelo);
+                statement.setString(3, marca);
+                statement.setString(4, lote);
+                statement.setDouble(5, preco);
+                statement.setString(6, categoria);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    
+        public void adicionarMonitor(Monitor monitor) {
+
+            String id = monitor.getId();
+            int tamanho = monitor.getTamanho();
+            int taxaDeAtualizacao = monitor.getTaxaDeAtualizacao();
+            String resolucao = monitor.getResolucao();
+            String tipoDeTela = monitor.getTipoDeTela();
+
+            String comando = "INSERT INTO monitor VALUES (?, ?, ?, ?, ?)";
+
+            try {
                 PreparedStatement monitorStatement = connection.prepareStatement(comando);
 
                 monitorStatement.setString(1, id);
@@ -66,46 +88,53 @@ public class GerenciadorDatabase {
                 monitorStatement.setString(4, resolucao);
                 monitorStatement.setString(5, tipoDeTela);
                 monitorStatement.executeUpdate();
-            } else if (categoria.equals("Computador")) {
-                Computador computador = (Computador) produto;
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
 
-                int memoriaRam = computador.getMemoriaRam();
-                int armazenamento = computador.getArmazenamento();
-                String sistemaOperacional = computador.getSistemaOperacional();
+        }
+        
+        public void adicionarComputador(Computador computador) {
 
-                comando = "INSERT INTO computador VALUES (?, ?, ?, ?)";
+            String id = computador.getId();
+            int memoriaRam = computador.getMemoriaRam();
+            int armazenamento = computador.getArmazenamento();
+            String sistemaOperacional = computador.getSistemaOperacional();
 
+            String comando = "INSERT INTO computador VALUES (?, ?, ?, ?)";
+
+            try {
                 PreparedStatement computadorStatement = connection.prepareStatement(comando);
                 computadorStatement.setString(1, id);
                 computadorStatement.setInt(2, memoriaRam);
                 computadorStatement.setInt(3, armazenamento);
                 computadorStatement.setString(4, sistemaOperacional);
                 computadorStatement.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
-            } else if (categoria.equals("Auricular")) {
-                Auricular auricular = (Auricular) produto;
+        public void adicionarAuricular(Auricular auricular) {
+            
+            String id = auricular.getId();
+            int impedancia = auricular.getImpedancia();
+            int sensibilidade = auricular.getSensibilidade();
+            String conexao = auricular.getConexao();
 
-                int impedancia = auricular.getImpedancia();
-                int sensibilidade = auricular.getSensibilidade();
-                String conexao = auricular.getConexao();
+            String comando = "INSERT INTO auricular VALUES (?, ?, ?, ?)";
 
-                comando = "INSERT INTO auricular VALUES (?, ?, ?, ?)";
-
+            try {
                 PreparedStatement auricularStatement = connection.prepareStatement(comando);
                 auricularStatement.setString(1, id);
                 auricularStatement.setInt(2, impedancia);
                 auricularStatement.setInt(3, sensibilidade);
                 auricularStatement.setString(4, conexao);
                 auricularStatement.executeUpdate();
-
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-
-        } catch (SQLException e) {
-
-            System.out.println(e.getMessage());
-
         }
-    }
 
     public ArrayList<Produto> carregarProdutos() {
         ArrayList<Produto> produtosDoBancoDeDados = new ArrayList<>();
