@@ -47,7 +47,7 @@ public class GerenciadorDatabase {
             statement.setString(4, lote);
             statement.setDouble(5, preco);
             statement.setString(6, categoria);
-            statement.execute();
+            statement.executeUpdate();
             if (categoria.equals("Monitor")) {
                 Monitor monitor = (Monitor) produto;
 
@@ -65,7 +65,7 @@ public class GerenciadorDatabase {
                 monitorStatement.setInt(3, taxaDeAtualizacao);
                 monitorStatement.setString(4, resolucao);
                 monitorStatement.setString(5, tipoDeTela);
-                monitorStatement.execute();
+                monitorStatement.executeUpdate();
             } else if (categoria.equals("Computador")) {
                 Computador computador = (Computador) produto;
 
@@ -80,7 +80,7 @@ public class GerenciadorDatabase {
                 computadorStatement.setInt(2, memoriaRam);
                 computadorStatement.setInt(3, armazenamento);
                 computadorStatement.setString(4, sistemaOperacional);
-                computadorStatement.execute();
+                computadorStatement.executeUpdate();
 
             } else if (categoria.equals("Auricular")) {
                 Auricular auricular = (Auricular) produto;
@@ -96,7 +96,7 @@ public class GerenciadorDatabase {
                 auricularStatement.setInt(2, impedancia);
                 auricularStatement.setInt(3, sensibilidade);
                 auricularStatement.setString(4, conexao);
-                auricularStatement.execute();
+                auricularStatement.executeUpdate();
 
             }
 
