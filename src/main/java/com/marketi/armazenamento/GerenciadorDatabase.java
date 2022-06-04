@@ -46,9 +46,9 @@ public class GerenciadorDatabase {
     public void adicionarProduto(Produto produto) {
 
         String id = produto.getId();
-        String modelo = produto.getModelo();
         String marca = produto.getMarca();
-        String lote = produto.getMarca();
+        String modelo = produto.getModelo();
+        String lote = produto.getLote();
         double preco = produto.getPreco();
         String categoria = produto.getCategoria();
 
@@ -58,8 +58,8 @@ public class GerenciadorDatabase {
 
             PreparedStatement statement = connection.prepareStatement(comando);
             statement.setString(1, id);
-            statement.setString(2, modelo);
-            statement.setString(3, marca);
+            statement.setString(2, marca);
+            statement.setString(3, modelo);
             statement.setString(4, lote);
             statement.setDouble(5, preco);
             statement.setString(6, categoria);
