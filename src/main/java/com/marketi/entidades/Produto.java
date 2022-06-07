@@ -35,7 +35,7 @@ public class Produto {
 
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|%10s|%15s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|%-10s|%-15s|%n",
                         "Id",
                         "Categoria",
                         "Marca",
@@ -44,7 +44,7 @@ public class Produto {
                         "Lote"));
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|R$%8.2f|%15s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|R$%-8.2f|%-15s|%n",
                         id,
                         categoria,
                         marca,

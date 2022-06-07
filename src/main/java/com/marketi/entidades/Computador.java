@@ -25,7 +25,7 @@ public class Computador extends Produto {
 
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|%10s|%20s|%15s|%13s|%20s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|%-10s|%-20s|%-15s|%-13s|%-20s|%n",
                         "Id",
                         "Categoria",
                         "Marca",
@@ -37,7 +37,7 @@ public class Computador extends Produto {
                         "Sistema Operacional"));
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|R$%8.2f|%20s|%12s GB|%10s GB|%20s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|R$%-8.2f|%-20s|%-12s GB|%-10s GB|%-20s|%n",
                         id,
                         categoria,
                         marca,

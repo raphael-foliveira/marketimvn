@@ -48,8 +48,10 @@ public class Catalogo {
      * @return O produto, caso ele exista, ou null se não existir
      */
     public Produto encontrarProduto(String id) {
-        int indice = produtos.indexOf(new Produto(id));
-        return produtos.get(indice);
+        if (produtos.size() == 0) {
+            return null;
+        }
+        return produtos.get(produtos.indexOf(new Produto(id)));
     }
 
     public void atualizarPrecoProduto(Produto produto, double novoPreco) {

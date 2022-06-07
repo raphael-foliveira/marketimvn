@@ -32,7 +32,7 @@ public class Monitor extends Produto {
 
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%15s|%10s|%15s|%10s|%15s|%10s|%10s|%n",
+                        "|%-5s|%-10s|%-15s|%-15s|%-10s|%-15s|%-10s|%-15s|%-10s|%-10s|%n",
                         "Id",
                         "Categoria",
                         "Marca",
@@ -45,7 +45,7 @@ public class Monitor extends Produto {
                         "Tipo Tela"));
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%15s|R$%8.2f|%15s|%6s pol|%12s Hz|%10s|%10s|%n",
+                        "|%-5s|%-10s|%-15s|%-15s|R$%-8.2f|%-15s|%-6s pol|%-12s Hz|%-10s|%-10s|%n",
                         id,
                         categoria,
                         marca,

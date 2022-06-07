@@ -24,7 +24,7 @@ public class Auricular extends Produto {
         StringBuilder builder = new StringBuilder();
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|%10s|%20s|%15s|%13s|%10s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|%-10s|%-20s|%-15s|%-13s|%-10s|%n",
                         "Id",
                         "Categoria",
                         "Marca",
@@ -36,7 +36,7 @@ public class Auricular extends Produto {
                         "Conexão"));
         builder.append(
                 String.format(
-                        "|%5s|%10s|%15s|%20s|R$%8.2f|%20s|%10s Ohms|%10s dB|%10s|%n",
+                        "|%-5s|%-10s|%-15s|%-20s|R$%-8.2f|%-20s|%-10s Ohms|%-10s dB|%-10s|%n",
                         id,
                         categoria,
                         marca,
