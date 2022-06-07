@@ -1,7 +1,7 @@
 package com.marketi.entidades;
 
 public class Produto {
-    final String id, marca, modelo, lote;
+    String id, marca, modelo, lote;
     String categoria;
     double preco;
 
@@ -17,6 +17,16 @@ public class Produto {
         this.lote = lote;
         this.preco = preco;
         this.categoria = "Diverso";
+    }
+
+    public Produto(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Produto produto = (Produto) object;
+        return this.getId().equals(produto.getId());
     }
 
     @Override
