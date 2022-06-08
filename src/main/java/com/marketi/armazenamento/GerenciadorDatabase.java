@@ -21,7 +21,7 @@ public class GerenciadorDatabase {
             System.out.println("Conectando ao banco de dados");
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/marketi",
-                    "admin",
+                    "root",
                     "");
             System.out.println("Banco de dados conectado.");
         } catch (SQLException e) {
