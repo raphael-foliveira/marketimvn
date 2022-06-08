@@ -3,6 +3,7 @@ package com.marketi.armazenamento;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -136,7 +137,7 @@ public class GerenciadorDatabase {
         }
     }
 
-    public ArrayList<Produto> carregarProdutos() {
+    public List<Produto> carregarProdutos() {
         ArrayList<Produto> produtosDoBancoDeDados = new ArrayList<>();
         String comando = "SELECT * FROM produto";
         try {
