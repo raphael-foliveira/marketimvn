@@ -12,7 +12,7 @@ CREATE TABLE produto (
     );
     
 CREATE TABLE monitor (
-	id CHAR(4) NOT NULL,
+	id CHAR(4) NOT NULL UNIQUE,
     tamanho INT NOT NULL,
     taxadeatualizacao INT NOT NULL,
     resolucao VARCHAR(45) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE monitor (
     );
     
 CREATE TABLE computador (
-	id CHAR(4) NOT NULL,
+	id CHAR(4) NOT NULL UNIQUE,
     memoriaram INT NOT NULL,
     armazenamento INT NOT NULL,
     sistemaoperacional VARCHAR(45) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE computador (
     );
 
 CREATE TABLE auricular (
-	id CHAR(4) NOT NULL,
+	id CHAR(4) NOT NULL UNIQUE,
     impedancia INT NOT NULL,
     sensibilidade INT NOT NULL,
     conexao VARCHAR(45) NOT NULL,
