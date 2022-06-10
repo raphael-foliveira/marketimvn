@@ -13,6 +13,9 @@ import com.marketi.entidades.Computador;
 import com.marketi.entidades.Monitor;
 import com.marketi.entidades.Produto;
 
+/**
+ * Classe responsável pela conexão com o banco de dados mysql
+ */
 public class GerenciadorDatabase {
     Connection connection;
 
@@ -29,6 +32,10 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Adiciona um produto ao banco de dados, dentro das tabelas referentes ao tipo específico do produto
+     * @param produto
+     */
     public void adicionarAoBanco(Produto produto) {
 
         String categoria = produto.getCategoria();
@@ -44,6 +51,10 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Adiciona um produto diverso ao banco de dados
+     * @param produto
+     */
     public void adicionarProduto(Produto produto) {
 
         String id = produto.getId();
@@ -56,7 +67,6 @@ public class GerenciadorDatabase {
         String comando = "INSERT INTO produto VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-
             PreparedStatement statement = connection.prepareStatement(comando);
             statement.setString(1, id);
             statement.setString(2, marca);
@@ -70,6 +80,10 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Adiciona um monitor ao banco de dados
+     * @param monitor
+     */
     public void adicionarMonitor(Monitor monitor) {
 
         String id = monitor.getId();
@@ -82,7 +96,6 @@ public class GerenciadorDatabase {
 
         try {
             PreparedStatement monitorStatement = connection.prepareStatement(comando);
-
             monitorStatement.setString(1, id);
             monitorStatement.setInt(2, tamanho);
             monitorStatement.setInt(3, taxaDeAtualizacao);
@@ -95,6 +108,10 @@ public class GerenciadorDatabase {
 
     }
 
+    /**
+     * Adiciona um computador ao banco de dados
+     * @param computador
+     */
     public void adicionarComputador(Computador computador) {
 
         String id = computador.getId();
@@ -116,6 +133,10 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Adiciona um auricular ao banco de dados
+     * @param auricular
+     */
     public void adicionarAuricular(Auricular auricular) {
 
         String id = auricular.getId();
@@ -137,6 +158,10 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Coloca em uma lista todos os produtos existentes no banco de dados 
+     * @return Lista com todos os produtos existentes no banco
+     */
     public List<Produto> carregarProdutos() {
         ArrayList<Produto> produtosDoBancoDeDados = new ArrayList<>();
         String comando = "SELECT * FROM produto";
@@ -205,6 +230,10 @@ public class GerenciadorDatabase {
         return produtosDoBancoDeDados;
     }
 
+    /**
+     * Apaga um produto do banco de dados
+     * @param produto
+     */
     public void apagarDoBanco(Produto produto) {
         String comando = String.format("DELETE FROM produto WHERE (id='%s')", produto.getId());
         try {
@@ -214,6 +243,11 @@ public class GerenciadorDatabase {
         }
     }
 
+    /**
+     * Atualiza o preço de um produto específico no banco de dados
+     * @param produto
+     * @param novoPreco
+     */
     public void atualizarPrecoNoBanco(Produto produto, double novoPreco) {
         String comando = "UPDATE produto SET preco=? WHERE (id=?)";
         try {
