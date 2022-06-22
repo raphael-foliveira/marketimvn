@@ -89,7 +89,6 @@ public class MenuPrincipal extends Menus {
         System.out.printf("Tem certeza que deseja apagar %s %s?%n", produto.getMarca(), produto.getModelo());
         String resposta = Leitor.lerString("(s/n): "); // Confirmação do usuário
         if (resposta.equals("s")) {
-            catalogo.remover(produto);
             System.out.printf("%s removido.%n", produto.getModelo());
             return true;
         } else if (resposta.equals("n")) {
